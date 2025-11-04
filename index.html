@@ -1,62 +1,64 @@
-<!DOCTYPE html>
+
+# Create `index.html` with requested title, bold footer, embedded logo, and all v3-final features.
+import base64, pathlib
+
+logo_path = pathlib.Path("/mnt/data/logo sindico.jpg")
+logo_data_uri = ""
+if logo_path.exists():
+    logo_data_uri = "data:image/jpeg;base64," + base64.b64encode(logo_path.read_bytes()).decode("ascii")
+
+title_text = "Formulário de Atendimento – Ed. Itápolis | Síndico Juliano Garbuggio"
+
+html = f"""<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Formulário de Atendimento | Condomínio Edifício Itápolis</title>
+  <title>{title_text}</title>
+  <meta name="apple-mobile-web-app-title" content="{title_text}" />
   <meta name="theme-color" content="#0ea5e9"/>
   <style>
-    :root{
-      --bg:#f7f7f9;--card:#ffffff;--ink:#1f2937;--muted:#6b7280;--brand:#0ea5e9;--danger:#ef4444;--ok:#16a34a;--border:#e5e7eb;--focus:#2563eb
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0;font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg)}
-    header,main,footer{max-width:1080px;margin:0 auto;padding:16px}
-    header{padding-top:20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-    .logo{height:64px;width:auto;border-radius:8px;object-fit:contain;background:#fff;padding:6px;border:1px solid var(--border)}
-    h1{font-size:clamp(1.15rem,2.6vw,1.9rem);margin:.25rem 0}
-    .sub{color:var(--muted);margin:.25rem 0}
-    .legal{font-size:.9rem;color:var(--muted)}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.04);padding:18px;margin:14px 0}
-    .row{display:grid;grid-template-columns:1fr;gap:12px}
-    @media(min-width:720px){.row-2{grid-template-columns:1fr 1fr}.row-3{grid-template-columns:repeat(3,1fr)}}
-    label{display:block;font-weight:600;margin:.25rem 0}
-    .req::after{content:" *";color:var(--danger);font-weight:700}
-    input,select,textarea{font-size:16px}
-    input[type=text],input[type=email],select,textarea{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:#fff;outline:none;transition:border-color .2s,box-shadow .2s;min-height:44px}
-    textarea{min-height:140px;resize:vertical}
-    input:focus,select:focus,textarea:focus{border-color:var(--focus);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
-    .hint{font-size:.9rem;color:var(--muted);margin-top:4px}
-    .err{color:#b91c1c;font-size:.9rem;margin-top:6px}
-    .hide{display:none}
-    .muted{color:var(--muted)}
-    .inline{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-    .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-    button{appearance:none;border:1px solid var(--border);background:#fff;border-radius:10px;padding:12px 16px;cursor:pointer;font-weight:700;min-height:44px}
-    .primary{background:var(--brand);border-color:var(--brand);color:#fff}
-    .primary[disabled]{opacity:.6;cursor:not-allowed}
-    .ghost{background:#fff}
-    .alert{background:#f0f9ff;border:1px solid #bae6fd;color:#0c4a6e;border-radius:10px;padding:12px}
-    .notice{background:#fff7ed;border:1px solid #fed7aa;color:#7c2d12;border-radius:10px;padding:10px;margin-top:10px}
-    .policy{background:#eef2ff;border:1px dashed #c7d2fe;color:#1e293b;border-radius:10px;padding:12px;margin-bottom:10px}
-    .fade{opacity:0;max-height:0;overflow:hidden;transition:opacity .25s ease,max-height .25s ease}
-    .fade.show{opacity:1;max-height:1000px}
-    footer{color:var(--muted);text-align:center;padding:24px 16px 36px}
-    @media (prefers-color-scheme: dark){
-      :root{--bg:#0b1220;--card:#0f172a;--ink:#e5e7eb;--muted:#93a4b4;--border:#1f2a44}
-      .alert{background:#0a1b2e;border-color:#18314d;color:#bfe1ff}
-      .notice{background:#2a1706;border-color:#8a4b11;color:#ffedd5}
-      .policy{background:#0b1020;border-color:#2f3b66;color:#cbd5e1}
-    }
-    @media print{header,footer{box-shadow:none;border:none} .btns{display:none} body{background:#fff} .card{box-shadow:none}}
+    :root{{--bg:#f7f7f9;--card:#ffffff;--ink:#1f2937;--muted:#6b7280;--brand:#0ea5e9;--danger:#ef4444;--ok:#16a34a;--border:#e5e7eb;--focus:#2563eb}}
+    *{{box-sizing:border-box}}html,body{{height:100%}}body{{margin:0;font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg)}}
+    header,main,footer{{max-width:1080px;margin:0 auto;padding:16px}}header{{padding-top:20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}}
+    .logo{{height:64px;width:auto;border-radius:8px;object-fit:contain;background:#fff;padding:6px;border:1px solid var(--border)}}
+    h1{{font-size:clamp(1.15rem,2.6vw,1.9rem);margin:.25rem 0;font-weight:800}}
+    .sub{{color:var(--muted);margin:.25rem 0}}
+    .legal{{font-size:.9rem;color:var(--muted)}}
+    .card{{background:var(--card);border:1px solid var(--border);border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.04);padding:18px;margin:14px 0}}
+    .row{{display:grid;grid-template-columns:1fr;gap:12px}}
+    @media(min-width:720px){{.row-2{{grid-template-columns:1fr 1fr}}.row-3{{grid-template-columns:repeat(3,1fr)}}}}
+    label{{display:block;font-weight:600;margin:.25rem 0}}
+    .req::after{{content:" *";color:var(--danger);font-weight:700}}
+    input,select,textarea{{font-size:16px}}
+    input[type=text],input[type=email],select,textarea{{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:#fff;outline:none;transition:border-color .2s,box-shadow .2s;min-height:44px}}
+    textarea{{min-height:140px;resize:vertical}}
+    input:focus,select:focus,textarea:focus{{border-color:var(--focus);box-shadow:0 0 0 3px rgba(37,99,235,.15)}}
+    .hint{{font-size:.9rem;color:var(--muted);margin-top:4px}}
+    .err{{color:#b91c1c;font-size:.9rem;margin-top:6px}}
+    .hide{{display:none}}
+    .muted{{color:var(--muted)}}
+    .inline{{display:flex;gap:12px;align-items:center;flex-wrap:wrap}}
+    .btns{{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}}
+    button{{appearance:none;border:1px solid var(--border);background:#fff;border-radius:10px;padding:12px 16px;cursor:pointer;font-weight:700;min-height:44px}}
+    .primary{{background:var(--brand);border-color:var(--brand);color:#fff}}
+    .primary[disabled]{{opacity:.6;cursor:not-allowed}}
+    .ghost{{background:#fff}}
+    .alert{{background:#f0f9ff;border:1px solid #bae6fd;color:#0c4a6e;border-radius:10px;padding:12px}}
+    .notice{{background:#fff7ed;border:1px solid #fed7aa;color:#7c2d12;border-radius:10px;padding:10px;margin-top:10px}}
+    .policy{{background:#eef2ff;border:1px dashed #c7d2fe;color:#1e293b;border-radius:10px;padding:12px;margin-bottom:10px}}
+    .fade{{opacity:0;max-height:0;overflow:hidden;transition:opacity .25s ease,max-height .25s ease}}
+    .fade.show{{opacity:1;max-height:1000px}}
+    footer{{color:var(--ink);text-align:center;padding:24px 16px 36px;font-weight:800}}
+    @media (prefers-color-scheme: dark){{:root{{--bg:#0b1220;--card:#0f172a;--ink:#e5e7eb;--muted:#93a4b4;--border:#1f2a44}}.alert{{background:#0a1b2e;border-color:#18314d;color:#bfe1ff}}.notice{{background:#2a1706;border-color:#8a4b11;color:#ffedd5}}.policy{{background:#0b1020;border-color:#2f3b66;color:#cbd5e1}}}}
+    @media print{{header,footer{{box-shadow:none;border:none}} .btns{{display:none}} body{{background:#fff}} .card{{box-shadow:none}}}}
   </style>
 </head>
 <body>
   <header>
-    <img src="data:image/jpeg;base64,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" alt="Logo Juliano Garbuggio - Síndico Ed. Itápolis" class="logo" />
+    {"<img src='"+logo_data_uri+"' alt='Logo Juliano Garbuggio - Síndico Ed. Itápolis' class='logo' />" if logo_data_uri else ""}
     <div>
-      <h1>Formulário de Atendimento | Condomínio Edifício Itápolis</h1>
+      <h1><strong>Formulário de Atendimento – Ed. Itápolis | Síndico Juliano Garbuggio</strong></h1>
       <div class="sub">Síndico: <strong>Juliano Garbuggio</strong></div>
       <div class="legal">De acordo com o REGIMENTO INTERNO DO CONDOMÍNIO EDIFÍCIO ITÁPOLIS (Assembleia Geral Extraordinária de 23/09/2025) Registro nº 3.814.811 do Livro B do 2º Oficial de Registro de Títulos e Documentos da Comarca de São Paulo-SP, em 21/10/2025</div>
     </div>
@@ -64,7 +66,6 @@
 
   <main>
     <form id="formItapolis" novalidate>
-      <!-- A — Relação -->
       <section class="card" aria-labelledby="relacaoTitle">
         <h2 id="relacaoTitle">Relação</h2>
         <div class="row">
@@ -81,7 +82,6 @@
         </div>
       </section>
 
-      <!-- B — Solicitante -->
       <section class="card" aria-labelledby="solTitle">
         <h2 id="solTitle">Solicitante</h2>
         <div class="row row-2">
@@ -123,7 +123,6 @@
           </div>
         </div>
 
-        <!-- Endereço automático / manual -->
         <div id="endAuto" class="fade" aria-live="polite">
           <div class="hint">Endereço do solicitante</div>
           <div class="card" style="padding:12px">
@@ -141,42 +140,22 @@
         <div id="endManual" class="fade" aria-live="polite">
           <div class="hint">Endereço do proprietário (preenchimento manual)</div>
           <div class="row row-2">
-            <div>
-              <label for="logra" class="req">Logradouro</label>
-              <input type="text" id="logra" autocomplete="address-line1" />
-            </div>
-            <div>
-              <label for="num" class="req">Número</label>
-              <input type="text" id="num" inputmode="numeric" />
-            </div>
-            <div>
-              <label for="compl">Complemento</label>
-              <input type="text" id="compl" autocomplete="address-line2" />
-            </div>
-            <div>
-              <label for="bairro" class="req">Bairro</label>
-              <input type="text" id="bairro" />
-            </div>
-            <div>
-              <label for="cidade" class="req">Cidade</label>
-              <input type="text" id="cidade" autocomplete="address-level2" />
-            </div>
-            <div>
-              <label for="uf" class="req">UF</label>
+            <div><label for="logra" class="req">Logradouro</label><input type="text" id="logra" autocomplete="address-line1" /></div>
+            <div><label for="num" class="req">Número</label><input type="text" id="num" inputmode="numeric" /></div>
+            <div><label for="compl">Complemento</label><input type="text" id="compl" autocomplete="address-line2" /></div>
+            <div><label for="bairro" class="req">Bairro</label><input type="text" id="bairro" /></div>
+            <div><label for="cidade" class="req">Cidade</label><input type="text" id="cidade" autocomplete="address-level2" /></div>
+            <div><label for="uf" class="req">UF</label>
               <select id="uf" autocomplete="address-level1">
                 <option value="">UF</option>
                 <option>AC</option><option>AL</option><option>AP</option><option>AM</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MT</option><option>MS</option><option>MG</option><option>PA</option><option>PB</option><option>PR</option><option>PE</option><option>PI</option><option>RJ</option><option>RN</option><option>RS</option><option>RO</option><option>RR</option><option>SC</option><option>SP</option><option>SE</option><option>TO</option>
               </select>
             </div>
-            <div>
-              <label for="cep" class="req">CEP</label>
-              <input type="text" id="cep" placeholder="00000-000" inputmode="numeric" autocomplete="postal-code" />
-            </div>
+            <div><label for="cep" class="req">CEP</label><input type="text" id="cep" placeholder="00000-000" inputmode="numeric" autocomplete="postal-code" /></div>
           </div>
         </div>
       </section>
 
-      <!-- C — Motivo -->
       <section class="card" aria-labelledby="motivoTitle">
         <h2 id="motivoTitle">Motivo do Contato</h2>
         <div class="row">
@@ -195,147 +174,54 @@
           </div>
         </div>
 
-        <!-- Avisos legais por motivo -->
-        <div id="notaAtualizacao" class="fade alert" aria-live="polite">
-          <strong>Referência legal:</strong> Art. 3º, VI do Regimento Interno.
-        </div>
-        <div id="notaTexto" class="fade alert" aria-live="polite">
-          <strong>Referência legal:</strong> Art. 2º, III do Regimento Interno (Elogios, Sugestões, Dúvidas).
-        </div>
-        <div id="notaDenuncia" class="fade alert" aria-live="polite">
-          <strong>Referência legal:</strong> Art. 2º, VII do Regimento Interno (Denúncias).
-        </div>
+        <div id="notaAtualizacao" class="fade alert" aria-live="polite"><strong>Referência legal:</strong> Art. 3º, VI do Regimento Interno.</div>
+        <div id="notaTexto" class="fade alert" aria-live="polite"><strong>Referência legal:</strong> Art. 2º, III do Regimento Interno (Elogios, Sugestões, Dúvidas).</div>
+        <div id="notaDenuncia" class="fade alert" aria-live="polite"><strong>Referência legal:</strong> Art. 2º, VII do Regimento Interno (Denúncias).</div>
 
-        <!-- Texto simples (elogio/sugestões/dúvidas) -->
         <div id="blocoTexto" class="fade" aria-live="polite">
           <label for="textoSimples" class="req">Descrição</label>
           <textarea id="textoSimples" placeholder="Escreva aqui..." autocomplete="off"></textarea>
           <div id="textoSimplesErr" class="err hide">Descreva sua mensagem.</div>
         </div>
 
-        <!-- Atualização de cadastro -->
         <div id="blocoAtualizacao" class="fade" aria-live="polite">
           <div class="inline" style="margin-bottom:8px">
-            <button type="button" class="ghost" id="copiarSolicitante">Copiar dados do Solicitante</button>
-            <span class="muted">(opcional)</span>
+            <button type="button" class="ghost" id="copiarSolicitante">Copiar dados do Solicitante</button><span class="muted">(opcional)</span>
           </div>
-          <details class="card">
-            <summary><strong>A — MORADOR(A)</strong></summary>
+          <details class="card"><summary><strong>A — MORADOR(A)</strong></summary>
             <div class="row row-2" style="margin-top:10px">
-              <div>
-                <label for="moraNome">Nome completo</label>
-                <input type="text" id="moraNome" />
-              </div>
-              <div>
-                <label for="moraCPF">CPF</label>
-                <input type="text" id="moraCPF" placeholder="000.000.000-00" />
-              </div>
-              <div>
-                <label for="moraRel">Relação</label>
-                <select id="moraRel">
-                  <option value="">Selecione...</option>
-                  <option>Esposo(a)</option>
-                  <option>Companheiro(a)</option>
-                  <option>Filho(a)</option>
-                  <option>Outros</option>
-                </select>
-              </div>
-              <div id="moraRelOutroWrap" class="hide">
-                <label for="moraRelOutro" class="req">Especificar relação</label>
-                <input type="text" id="moraRelOutro" />
-              </div>
-              <div>
-                <label for="moraEC">Estado civil</label>
-                <select id="moraEC">
-                  <option value="">Selecione...</option>
-                  <option>casado(a)</option>
-                  <option>união estável</option>
-                  <option>solteiro(a)</option>
-                  <option>viúvo(a)</option>
-                </select>
-              </div>
-              <div>
-                <label for="moraWhats">WhatsApp</label>
-                <input type="text" id="moraWhats" placeholder="11 90000-0000" />
-              </div>
-              <div>
-                <label for="moraAp" class="req">Apartamento</label>
-                <select id="moraAp"></select>
-                <div id="moraApErr" class="err hide">Selecione o apartamento.</div>
-              </div>
+              <div><label for="moraNome">Nome completo</label><input type="text" id="moraNome" /></div>
+              <div><label for="moraCPF">CPF</label><input type="text" id="moraCPF" placeholder="000.000.000-00" /></div>
+              <div><label for="moraRel">Relação</label><select id="moraRel">
+                <option value="">Selecione...</option><option>Esposo(a)</option><option>Companheiro(a)</option><option>Filho(a)</option><option>Outros</option></select></div>
+              <div id="moraRelOutroWrap" class="hide"><label for="moraRelOutro" class="req">Especificar relação</label><input type="text" id="moraRelOutro" /></div>
+              <div><label for="moraEC">Estado civil</label><select id="moraEC"><option value="">Selecione...</option><option>casado(a)</option><option>união estável</option><option>solteiro(a)</option><option>viúvo(a)</option></select></div>
+              <div><label for="moraWhats">WhatsApp</label><input type="text" id="moraWhats" placeholder="11 90000-0000" /></div>
+              <div><label for="moraAp" class="req">Apartamento</label><select id="moraAp"></select><div id="moraApErr" class="err hide">Selecione o apartamento.</div></div>
             </div>
           </details>
 
-          <details class="card">
-            <summary><strong>B — PROPRIETÁRIO(A)</strong></summary>
+          <details class="card"><summary><strong>B — PROPRIETÁRIO(A)</strong></summary>
             <div class="row row-2" style="margin-top:10px">
-              <div>
-                <label for="propNome">Nome completo</label>
-                <input type="text" id="propNome" />
-              </div>
-              <div>
-                <label for="propCPF">CPF</label>
-                <input type="text" id="propCPF" placeholder="000.000.000-00" />
-              </div>
-              <div>
-                <label for="propRel">Relação</label>
-                <select id="propRel">
-                  <option value="">Selecione...</option>
-                  <option>Esposo(a)</option>
-                  <option>Companheiro(a)</option>
-                  <option>Filho(a)</option>
-                  <option>Outros</option>
-                </select>
-              </div>
-              <div id="propRelOutroWrap" class="hide">
-                <label for="propRelOutro" class="req">Especificar relação</label>
-                <input type="text" id="propRelOutro" />
-              </div>
-              <div>
-                <label for="propEC">Estado civil</label>
-                <select id="propEC">
-                  <option value="">Selecione...</option>
-                  <option>casado(a)</option>
-                  <option>união estável</option>
-                  <option>solteiro(a)</option>
-                  <option>viúvo(a)</option>
-                </select>
-              </div>
-              <div>
-                <label for="propEmail">E-mail</label>
-                <input type="email" id="propEmail" />
-              </div>
-              <div>
-                <label for="propWhats">WhatsApp</label>
-                <input type="text" id="propWhats" placeholder="11 90000-0000" />
-              </div>
-              <div>
-                <label for="propAp" class="req">Apartamento</label>
-                <select id="propAp"></select>
-                <div id="propApErr" class="err hide">Selecione o apartamento.</div>
-              </div>
+              <div><label for="propNome">Nome completo</label><input type="text" id="propNome" /></div>
+              <div><label for="propCPF">CPF</label><input type="text" id="propCPF" placeholder="000.000.000-00" /></div>
+              <div><label for="propRel">Relação</label><select id="propRel">
+                <option value="">Selecione...</option><option>Esposo(a)</option><option>Companheiro(a)</option><option>Filho(a)</option><option>Outros</option></select></div>
+              <div id="propRelOutroWrap" class="hide"><label for="propRelOutro" class="req">Especificar relação</label><input type="text" id="propRelOutro" /></div>
+              <div><label for="propEC">Estado civil</label><select id="propEC"><option value="">Selecione...</option><option>casado(a)</option><option>união estável</option><option>solteiro(a)</option><option>viúvo(a)</option></select></div>
+              <div><label for="propEmail">E-mail</label><input type="email" id="propEmail" /></div>
+              <div><label for="propWhats">WhatsApp</label><input type="text" id="propWhats" placeholder="11 90000-0000" /></div>
+              <div><label for="propAp" class="req">Apartamento</label><select id="propAp"></select><div id="propApErr" class="err hide">Selecione o apartamento.</div></div>
             </div>
           </details>
         </div>
 
-        <!-- Denúncias -->
         <div id="blocoDenuncia" class="fade" aria-live="polite">
           <div class="card alert" style="margin-bottom:12px">Forneça o máximo de detalhes possíveis. Informações imprecisas podem dificultar a apuração.</div>
           <div class="row row-3">
-            <div>
-              <label for="dataOc" class="req">Data aproximada</label>
-              <input type="text" id="dataOc" placeholder="DD/MM/AAAA" inputmode="numeric" />
-              <div id="dataOcErr" class="err hide">Informe a data no formato DD/MM/AAAA.</div>
-            </div>
-            <div>
-              <label for="horaOc">Hora aproximada</label>
-              <input type="text" id="horaOc" placeholder="HH:MM" inputmode="numeric" />
-            </div>
-            <div id="apDenunciadoWrap" class="hide">
-              <label for="apDenunciado" class="req">Apartamento denunciado</label>
-              <select id="apDenunciado"></select>
-              <div id="apDenErr" class="err hide">Selecione o apartamento denunciado.</div>
-            </div>
+            <div><label for="dataOc" class="req">Data aproximada</label><input type="text" id="dataOc" placeholder="DD/MM/AAAA" inputmode="numeric" /><div id="dataOcErr" class="err hide">Informe a data no formato DD/MM/AAAA.</div></div>
+            <div><label for="horaOc">Hora aproximada</label><input type="text" id="horaOc" placeholder="HH:MM" inputmode="numeric" /></div>
+            <div id="apDenunciadoWrap" class="hide"><label for="apDenunciado" class="req">Apartamento denunciado</label><select id="apDenunciado"></select><div id="apDenErr" class="err hide">Selecione o apartamento denunciado.</div></div>
           </div>
           <div class="row">
             <div class="inline" role="radiogroup" aria-describedby="contraErr">
@@ -345,245 +231,82 @@
             </div>
             <div id="contraErr" class="err hide">Selecione uma opção.</div>
           </div>
-          <div id="colabWrap" class="fade">
-            <label for="colabNome">Nome do colaborador/empresa (se souber)</label>
-            <input type="text" id="colabNome" />
-          </div>
-          <div style="margin-top:8px">
-            <label for="relato" class="req">Descrição dos fatos / Relato</label>
-            <textarea id="relato" placeholder="Relate o ocorrido, nomes dos envolvidos, local, testemunhas, evidências..."></textarea>
-            <div id="relatoErr" class="err hide">Descreva o ocorrido.</div>
-          </div>
+          <div id="colabWrap" class="fade"><label for="colabNome">Nome do colaborador/empresa (se souber)</label><input type="text" id="colabNome" /></div>
+          <div style="margin-top:8px"><label for="relato" class="req">Descrição dos fatos / Relato</label><textarea id="relato" placeholder="Relate o ocorrido, nomes dos envolvidos, local, testemunhas, evidências..."></textarea><div id="relatoErr" class="err hide">Descreva o ocorrido.</div></div>
           <div class="notice" style="margin-top:10px"><strong>Referência legal:</strong> Art. 2º, VII do Regimento Interno (Denúncias).</div>
         </div>
 
-        <!-- Reforma -->
         <div id="blocoReforma" class="fade" aria-live="polite">
           <div class="card alert" style="margin-bottom:12px">
             <strong>AUTORIZAÇÃO PARA REFORMA (Art. 21º do Regimento Interno).</strong> Toda reforma exige a apresentação de RT e Memorial Descritivo.
             <div class="notice"><strong>Importante:</strong> IMPRIMIR ESTE FORMULÁRIO e enviar anexado no WhatsApp, juntamente com a RT e o Memorial Descritivo.</div>
           </div>
           <div class="row row-3">
-            <div>
-              <label for="apReforma" class="req">Apartamento</label>
-              <select id="apReforma"></select>
-              <div id="apReformaErr" class="err hide">Selecione o apartamento.</div>
-            </div>
-            <div>
-              <label for="respTec">Responsável técnico (Nome/CPF)</label>
-              <input type="text" id="respTec" placeholder="Opcional" />
-            </div>
-            <div>
-              <label for="periodoIni">Início (previsão)</label>
-              <input type="text" id="periodoIni" placeholder="DD/MM/AAAA" inputmode="numeric" />
-            </div>
-            <div>
-              <label for="periodoFim">Término (previsão)</label>
-              <input type="text" id="periodoFim" placeholder="DD/MM/AAAA" inputmode="numeric" />
-            </div>
+            <div><label for="apReforma" class="req">Apartamento</label><select id="apReforma"></select><div id="apReformaErr" class="err hide">Selecione o apartamento.</div></div>
+            <div><label for="respTec">Responsável técnico (Nome/CPF)</label><input type="text" id="respTec" placeholder="Opcional" /></div>
+            <div><label for="periodoIni">Início (previsão)</label><input type="text" id="periodoIni" placeholder="DD/MM/AAAA" inputmode="numeric" /></div>
+            <div><label for="periodoFim">Término (previsão)</label><input type="text" id="periodoFim" placeholder="DD/MM/AAAA" inputmode="numeric" /></div>
           </div>
-          <div>
-            <label for="descReforma" class="req">Descrição resumida da reforma</label>
-            <textarea id="descReforma"></textarea>
-            <div id="descReformaErr" class="err hide">Descreva a reforma.</div>
-          </div>
-          <div class="inline" style="margin-top:8px">
-            <input type="checkbox" id="cienciaObra" />
-            <label for="cienciaObra" class="req">Declaro ciência de que a obra seguirá as normas do condomínio e legislação aplicável.</label>
-            <div id="cienciaErr" class="err hide">Confirme a ciência para enviar.</div>
-          </div>
+          <div><label for="descReforma" class="req">Descrição resumida da reforma</label><textarea id="descReforma"></textarea><div id="descReformaErr" class="err hide">Descreva a reforma.</div></div>
+          <div class="inline" style="margin-top:8px"><input type="checkbox" id="cienciaObra" /><label for="cienciaObra" class="req">Declaro ciência de que a obra seguirá as normas do condomínio e legislação aplicável.</label><div id="cienciaErr" class="err hide">Confirme a ciência para enviar.</div></div>
         </div>
       </section>
 
-      <!-- LGPD + Ações -->
       <section class="card">
-        <div class="policy">
-          <strong>Envio direto ao WhatsApp Business do síndico:</strong> ao prosseguir, o conteúdo será preparado para envio no aplicativo. 
-          Seus dados serão tratados exclusivamente para fins de administração condominial, com base no <em>legítimo interesse</em> e/ou consentimento, conforme a LGPD (Lei nº 13.709/2018).
-          O envio será realizado pelo próprio titular via WhatsApp Business (canal externo), isentando o condomínio de responsabilidade por eventuais indisponibilidades do serviço de terceiros.
-          Não compartilhamos seus dados com terceiros além do necessário ao atendimento. Ao marcar a caixa abaixo, você declara estar ciente e concordar.
-        </div>
-        <div class="inline" style="margin-bottom:8px">
-          <input type="checkbox" id="lgpdOk" />
-          <label for="lgpdOk" class="req">Li e concordo com o Aviso de Privacidade acima e autorizo o envio desta solicitação via WhatsApp Business.</label>
-          <div id="lgpdErr" class="err hide">É necessário concordar com o aviso de privacidade.</div>
-        </div>
-
-        <div class="inline" style="margin-bottom:8px">
-          <input type="checkbox" id="enviarEmail" checked />
-          <label for="enviarEmail">Enviar cópia também por e-mail para <strong>juliano@garbuggio.com.br</strong></label>
-        </div>
-        <div class="btns">
-          <button type="button" class="ghost" onclick="limparForm()">Limpar</button>
-          <button type="button" class="ghost" onclick="window.print()">Imprimir</button>
-          <button id="btnEnviar" type="button" class="primary" disabled>Enviar via WhatsApp Business</button>
-        </div>
+        <div class="policy"><strong>Envio direto ao WhatsApp Business do síndico:</strong> ao prosseguir, o conteúdo será preparado para envio no aplicativo.
+        Seus dados serão tratados exclusivamente para fins de administração condominial, com base no <em>legítimo interesse</em> e/ou consentimento, conforme a LGPD (Lei nº 13.709/2018).
+        O envio será realizado pelo próprio titular via WhatsApp Business (canal externo), isentando o condomínio de responsabilidade por eventuais indisponibilidades do serviço de terceiros.
+        Não compartilhamos seus dados com terceiros além do necessário ao atendimento. Ao marcar a caixa abaixo, você declara estar ciente e concordar.</div>
+        <div class="inline" style="margin-bottom:8px"><input type="checkbox" id="lgpdOk" /><label for="lgpdOk" class="req">Li e concordo com o Aviso de Privacidade acima e autorizo o envio desta solicitação via WhatsApp Business.</label><div id="lgpdErr" class="err hide">É necessário concordar com o aviso de privacidade.</div></div>
+        <div class="inline" style="margin-bottom:8px"><p><strong>Clique em “Imprimir” caso queira enviar cópia por e-mail para juliano@garbuggio.com.br.</strong></p>
+        <div class="btns"><button type="button" class="ghost" onclick="limparForm()">Limpar</button><button type="button" class="ghost" onclick="window.print()">Imprimir</button><button id="btnEnviar" type="button" class="primary" disabled>Enviar via WhatsApp Business</button></div>
         <div class="hint">O botão de envio será habilitado quando todos os campos obrigatórios estiverem preenchidos e houver concordância com o aviso de privacidade.</div>
       </section>
     </form>
   </main>
 
   <footer>
-    Condomínio Edifício Itápolis - CNPJ: 54.488.978/0001-73 • Rua Pamplona, 1461 - Jardim Paulista | CEP: 01405-003 | São Paulo - SP
+    <div><strong>Condomínio Edifício Itápolis – CNPJ: 54.488.978/0001-73</strong></div>
+    <div><strong>Rua Pamplona, 1461 – Jardim Paulista | CEP: 01405-003 | São Paulo – SP</strong></div>
   </footer>
 
   <script>
-    const byId = (id)=>document.getElementById(id);
-    const show = (el, s=true)=>{ if(!el) return; el.classList.toggle('show', s); el.classList.toggle('hide', !s); };
-    const setErr = (id, cond)=>{ const el = byId(id); if(!el) return; el.classList.toggle('hide', !cond); };
-    const APS = [11,12,13,21,22,32,41,42,43,51,52,53,61,62,63,71,72,73,81,82,83].map(String);
-    function popularApsById(id){ const el = byId(id); if(el){ el.innerHTML = '<option value="">Selecione...</option>' + APS.map(a=>`<option>${a}</option>`).join(''); } }
+    const byId=(id)=>document.getElementById(id);const show=(el,s=true)=>{{if(!el)return;el.classList.toggle('show',s);el.classList.toggle('hide',!s);}};const setErr=(id,cond)=>{{const el=byId(id);if(!el)return;el.classList.toggle('hide',!cond);}};const APS=[11,12,13,21,22,32,41,42,43,51,52,53,61,62,63,71,72,73,81,82,83].map(String);
+    function popularApsById(id){{const el=byId(id);if(el){{el.innerHTML='<option value=\"\">Selecione...</option>'+APS.map(a=>`<option>${{a}}</option>`).join('');}}}}
     ['apAuto','moraAp','propAp','apDenunciado','apReforma'].forEach(popularApsById);
-
-    // Masks
-    function maskCPF(v){ return v.replace(/\D/g,'').slice(0,11).replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2'); }
-    function maskCEP(v){ return v.replace(/\D/g,'').slice(0,8).replace(/(\d{5})(\d)/,'$1-$2'); }
-    function maskWhats(v){ return v.replace(/\D/g,'').slice(0,11).replace(/^(\d{2})(\d{4,5})(\d{4})$/,'$1 $2-$3'); }
-    function maskDate(v){ v=v.replace(/\D/g,'').slice(0,8); if(v.length>=5){ return v.replace(/(\d{2})(\d{2})(\d{1,4})/,'$1/$2/$3'); } if(v.length>=3){ return v.replace(/(\d{2})(\d{1,2})/,'$1/$2'); } return v; }
-    function validDateBR(v){ return /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/.test(v); }
-
-    ['cpf','moraCPF','propCPF'].forEach(id=>{ const el = byId(id); if(el) el.addEventListener('input', e=> e.target.value = maskCPF(e.target.value)); });
-    ['whats','moraWhats','propWhats'].forEach(id=>{ const el = byId(id); if(el) el.addEventListener('input', e=> e.target.value = maskWhats(e.target.value)); });
-    const cepEl = byId('cep'); if(cepEl) cepEl.addEventListener('input', e=> e.target.value = maskCEP(e.target.value));
-
-    ['nasc','dataOc','periodoIni','periodoFim'].forEach(id=>{ const el = byId(id); if(el) el.addEventListener('input', e=> e.target.value = maskDate(e.target.value)); });
-
-    // Endereço: auto vs manual
-    const relacao = byId('relacao'); const endAuto = byId('endAuto'); const endManual = byId('endManual'); const apAuto = byId('apAuto');
-    function atualizarEndereco(){ const r = relacao.value;
-      if(r==='PROPRIETÁRIO(A)-MORADOR(A)'||r==='MORADOR(A)'){ show(endAuto,true); show(endManual,false); }
-      else if(r==='PROPRIETÁRIO(A)'){ show(endAuto,false); show(endManual,true); }
-      else { show(endAuto,false); show(endManual,false); }
-      validateAll();
-    }
-    relacao.addEventListener('change', atualizarEndereco);
-
-    // Motivo + notas
-    const motivo = byId('motivo'); 
-    const blocoTexto = byId('blocoTexto'); 
-    const blocoAtualizacao = byId('blocoAtualizacao'); 
-    const blocoDenuncia = byId('blocoDenuncia'); 
-    const blocoReforma = byId('blocoReforma');
-    const notaAtualizacao = byId('notaAtualizacao');
-    const notaTexto = byId('notaTexto');
-    const notaDenuncia = byId('notaDenuncia');
-
-    function atualizarMotivo(){ 
-      const m = motivo.value;
-      [blocoTexto, blocoAtualizacao, blocoDenuncia, blocoReforma, notaAtualizacao, notaTexto, notaDenuncia].forEach(el=>show(el,false));
-      if(['ELOGIO','SUGESTÕES','DÚVIDAS'].includes(m)){ show(notaTexto,true); show(blocoTexto,true); }
-      if(m==='ATUALIZAÇÃO DE CADASTRO'){ show(notaAtualizacao,true); show(blocoAtualizacao,true); }
-      if(m==='DENÚNCIAS'){ show(notaDenuncia,true); show(blocoDenuncia,true); }
-      if(m==='AUTORIZAÇÃO PARA REFORMA'){ show(blocoReforma,true); }
-      validateAll();
-    }
-    motivo.addEventListener('change', atualizarMotivo);
-
-    const apDenWrap = byId('apDenunciadoWrap'); const apDen = byId('apDenunciado'); const colabWrap = byId('colabWrap');
-    document.addEventListener('change', (e)=>{
-      if(e.target.name==='contra'){ const v = e.target.value; const precisaAp = (v==='Morador(a)'||v==='Proprietário(a)'); apDenWrap.classList.toggle('hide', !precisaAp); colabWrap.classList.toggle('show', v==='Colaborador(a)/Empresa'); validateAll(); }
-      if(e.target.id==='moraRel'){ byId('moraRelOutroWrap').classList.toggle('hide', e.target.value!=='Outros'); }
-      if(e.target.id==='propRel'){ byId('propRelOutroWrap').classList.toggle('hide', e.target.value!=='Outros'); }
-    });
-
-    // Validação
-    const btnEnviar = byId('btnEnviar');
-    function isEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v||''); } 
-    function isCPFBasic(v){ return /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(v||''); } 
-    function hasDDD(v){ return /^\d{2}\s\d{4,5}-\d{4}$/.test(v||''); }
-    function validarFormulario(){
-      let ok = true;
-      const base = !!relacao.value && !!byId('nome').value.trim() && isCPFBasic(byId('cpf').value) && validDateBR(byId('nasc').value) && !!byId('estadoCivil').value && isEmail(byId('email').value) && hasDDD(byId('whats').value) && !!motivo.value && byId('lgpdOk').checked;
-      ok = base;
-      setErr('lgpdErr', !byId('lgpdOk').checked);
-      setErr('nascErr', !validDateBR(byId('nasc').value));
-
-      if(relacao.value==='PROPRIETÁRIO(A)-MORADOR(A)'||relacao.value==='MORADOR(A)'){ ok = ok && !!apAuto.value; setErr('apAutoErr', !apAuto.value); }
-      if(relacao.value==='PROPRIETÁRIO(A)'){ const okEnd = ['logra','num','bairro','cidade','uf','cep'].every(id=>!!byId(id).value.trim()); ok = ok && okEnd; }
-
-      if(['ELOGIO','SUGESTÕES','DÚVIDAS'].includes(motivo.value)){ const okTxt = !!byId('textoSimples').value.trim(); ok = ok && okTxt; setErr('textoSimplesErr', !okTxt); }
-
-      if(motivo.value==='DENÚNCIAS'){ 
-        const contra=(document.querySelector('input[name="contra"]:checked')||{}).value; 
-        const okContra = !!contra; setErr('contraErr', !okContra);
-        const okAp = ( (contra!=='Morador(a)'&&contra!=='Proprietário(a)') || !!apDen.value ); setErr('apDenErr', !(contra!=='Morador(a)'&&contra!=='Proprietário(a)') && !apDen.value);
-        const okRel = !!byId('relato').value.trim(); setErr('relatoErr', !okRel);
-        const okDataOc = validDateBR(byId('dataOc').value); setErr('dataOcErr', !okDataOc);
-        ok = ok && okContra && okAp && okRel && okDataOc;
-      }
-
-      if(motivo.value==='AUTORIZAÇÃO PARA REFORMA'){ 
-        const okApRef = !!byId('apReforma').value; setErr('apReformaErr', !okApRef);
-        const okDesc = !!byId('descReforma').value.trim(); setErr('descReformaErr', !okDesc);
-        const okCiencia = byId('cienciaObra').checked; setErr('cienciaErr', !okCiencia);
-        const d1 = byId('periodoIni').value; const d2 = byId('periodoFim').value;
-        const v1 = !d1 || validDateBR(d1); const v2 = !d2 || validDateBR(d2);
-        ok = ok && okApRef && okDesc && okCiencia && v1 && v2;
-      }
-      btnEnviar.disabled = !ok; 
-      return ok;
-    }
-    function validateAll(){ validarFormulario(); }
-    document.addEventListener('input', validateAll, true); document.addEventListener('change', validateAll, true);
-
-    function headerTxt(){ return ['*Formulário de Atendimento | Condomínio Edifício Itápolis*','Síndico: Juliano Garbuggio','Regimento: AGE 23/09/2025 • Registro nº 3.814.811 (21/10/2025)','--------------------'].join('\n'); }
-    function fmt(v){ return v||''; }
-    function secSolicitante(){ 
-      const r=relacao.value; let addr=''; 
-      if(r==='PROPRIETÁRIO(A)-MORADOR(A)'||r==='MORADOR(A)'){ addr=`Endereço: Rua Pamplona, 1461 - Jardim Paulista | CEP: 01405-003 | São Paulo - SP\nApartamento: ${fmt(byId('apAuto').value)}`; } 
-      else if(r==='PROPRIETÁRIO(A)'){ addr=`Endereço: ${fmt(byId('logra').value)}, ${fmt(byId('num').value)} ${fmt(byId('compl').value?'- '+byId('compl').value:'')} - ${fmt(byId('bairro').value)} - ${fmt(byId('cidade').value)}/${fmt(byId('uf').value)} | CEP: ${fmt(byId('cep').value)}`; } 
-      return ['[Solicitante]',`Relação: *${fmt(r)}*`,`Nome: ${fmt(byId('nome').value)}`,`CPF: ${fmt(byId('cpf').value)}`,`Nascimento: ${fmt(byId('nasc').value)}`,`Estado civil: ${fmt(byId('estadoCivil').value)}`,`E-mail: ${fmt(byId('email').value)}`,`WhatsApp: ${fmt(byId('whats').value)}`,addr,'--------------------'].filter(Boolean).join('\n'); 
-    }
-    function secMotivo(){ const m=motivo.value; return ['[Motivo do contato]',`*${m}*`,'--------------------'].join('\n'); }
-    function secDetalhes(){ 
-      const m=motivo.value; const linhas=['[Detalhes]']; 
-      if(['ELOGIO','SUGESTÕES','DÚVIDAS'].includes(m)){ linhas.push(byId('textoSimples').value.trim()); linhas.push('Referência legal: Art. 2º, III do Regimento Interno.'); } 
-      if(m==='ATUALIZAÇÃO DE CADASTRO'){ 
-        if(byId('moraNome').value||byId('moraCPF').value||byId('moraAp').value){ const rel=byId('moraRel').value==='Outros'?`Outros (${fmt(byId('moraRelOutro').value)})`:fmt(byId('moraRel').value); linhas.push('[A — MORADOR(A)]',`Nome: ${fmt(byId('moraNome').value)}`,`CPF: ${fmt(byId('moraCPF').value)}`,`Relação: ${rel||''}`,`Estado civil: ${fmt(byId('moraEC').value)||''}`,`WhatsApp: ${fmt(byId('moraWhats').value)||''}`,`Apartamento: ${fmt(byId('moraAp').value)||''}`); } 
-        if(byId('propNome').value||byId('propCPF').value||byId('propAp').value){ const relp=byId('propRel').value==='Outros'?`Outros (${fmt(byId('propRelOutro').value)})`:fmt(byId('propRel').value); linhas.push('[B — PROPRIETÁRIO(A)]',`Nome: ${fmt(byId('propNome').value)}`,`CPF: ${fmt(byId('propCPF').value)}`,`Relação: ${relp||''}`,`Estado civil: ${fmt(byId('propEC').value)||''}`,`E-mail: ${fmt(byId('propEmail').value)||''}`,`WhatsApp: ${fmt(byId('propWhats').value)||''}`,`Apartamento: ${fmt(byId('propAp').value)||''}`); } 
-        linhas.push('Referência legal: Art. 3º, VI do Regimento Interno.');
-      } 
-      if(m==='DENÚNCIAS'){ 
-        const contra=(document.querySelector('input[name="contra"]:checked')||{}).value; 
-        linhas.push(`Contra: ${fmt(contra||'')}`); 
-        if(contra==='Morador(a)'||contra==='Proprietário(a)') linhas.push(`Apartamento denunciado: ${fmt(byId('apDenunciado').value||'')}`); 
-        if(contra==='Colaborador(a)/Empresa') linhas.push(`Colaborador/Empresa: ${fmt(byId('colabNome').value||'')}`); 
-        linhas.push(`Data aproximada: ${fmt(byId('dataOc').value||'')}`); 
-        linhas.push(`Hora aproximada: ${fmt(byId('horaOc').value||'')}`); 
-        linhas.push('Relato:'); 
-        linhas.push(byId('relato').value.trim()); 
-        linhas.push('Referência legal: Art. 2º, VII do Regimento Interno.');
-      } 
-      if(m==='AUTORIZAÇÃO PARA REFORMA'){ 
-        linhas.push(`Apartamento: ${fmt(byId('apReforma').value||'')}`,`Resp. técnico: ${fmt(byId('respTec').value||'')}`,`Período: ${fmt(byId('periodoIni').value||'')} a ${fmt(byId('periodoFim').value||'')}`,'Descrição da reforma:',byId('descReforma').value.trim(),`Ciência: ${byId('cienciaObra').checked?'SIM':'NÃO'}`);
-        linhas.push('Anexar: formulário impresso + RT + Memorial Descritivo.');
-      }
-      linhas.push('--------------------'); 
-      return linhas.join('\n'); 
-    }
-    function montarMensagem(){ return [headerTxt(), secSolicitante(), secMotivo(), secDetalhes()].join('\n'); }
-
-    const numeroWhats = '5511956759223';
-    btnEnviar.addEventListener('click', ()=>{
-      if(!validarFormulario()) return;
-      const texto = montarMensagem();
-      const wa = `https://wa.me/${numeroWhats}?text=${encodeURIComponent(texto)}`;
-      const w = window.open(wa, '_blank'); if(!w) alert('Abra o WhatsApp: pop-up pode ter sido bloqueado.');
-      if(byId('enviarEmail').checked){
-        const mail='juliano@garbuggio.com.br'; 
-        const assunto=encodeURIComponent('Formulário de Atendimento - Condomínio Itápolis'); 
-        const corpo=encodeURIComponent(texto); 
-        const mailto=`mailto:${mail}?subject=${assunto}&body=${corpo}`; 
-        setTimeout(()=>{ window.location.href = mailto; }, 400); 
-      }
-      alert('Confirmação: vamos abrir o WhatsApp Business com sua mensagem.' + (byId('enviarEmail').checked ? '\nUma cópia também será preparada para o e-mail.' : ''));
-    });
-
-    function limparForm(){ document.getElementById('formItapolis').reset(); ['endAuto','endManual','blocoTexto','blocoAtualizacao','blocoDenuncia','blocoReforma','colabWrap','notaAtualizacao','notaTexto','notaDenuncia'].forEach(id=>{ const el=byId(id); if(el){ el.classList.remove('show'); el.classList.add('hide'); } }); document.querySelectorAll('.err').forEach(e=>e.classList.add('hide')); btnEnviar.disabled=true; apDenWrap?.classList.add('hide'); }
-    window.limparForm = limparForm;
-
-    // inicialização
-    (function(){ ['apAuto','moraAp','propAp','apDenunciado','apReforma'].forEach(popularApsById); atualizarEndereco(); atualizarMotivo(); validateAll(); })();
+    function maskCPF(v){{return v.replace(/\\D/g,'').slice(0,11).replace(/(\\d{{3}})(\\d)/,'$1.$2').replace(/(\\d{{3}})(\\d)/,'$1.$2').replace(/(\\d{{3}})(\\d{{1,2}})$/,'$1-$2');}}
+    function maskCEP(v){{return v.replace(/\\D/g,'').slice(0,8).replace(/(\\d{{5}})(\\d)/,'$1-$2');}}
+    function maskWhats(v){{return v.replace(/\\D/g,'').slice(0,11).replace(/^(\\d{{2}})(\\d{{4,5}})(\\d{{4}})$/,'$1 $2-$3');}}
+    function maskDate(v){{v=v.replace(/\\D/g,'').slice(0,8);if(v.length>=5){{return v.replace(/(\\d{{2}})(\\d{{2}})(\\d{{1,4}})/,'$1/$2/$3');}}if(v.length>=3){{return v.replace(/(\\d{{2}})(\\d{{1,2}})/,'$1/$2');}}return v;}}
+    function validDateBR(v){{return /^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[0-2])\\/\\d{{4}}$/.test(v);}}
+    ['cpf','moraCPF','propCPF'].forEach(id=>{{const el=byId(id);if(el)el.addEventListener('input',e=>e.target.value=maskCPF(e.target.value));}});
+    ['whats','moraWhats','propWhats'].forEach(id=>{{const el=byId(id);if(el)el.addEventListener('input',e=>e.target.value=maskWhats(e.target.value));}});
+    const cepEl=byId('cep');if(cepEl)cepEl.addEventListener('input',e=>e.target.value=maskCEP(e.target.value));
+    ['nasc','dataOc','periodoIni','periodoFim'].forEach(id=>{{const el=byId(id);if(el)el.addEventListener('input',e=>e.target.value=maskDate(e.target.value));}});
+    const relacao=byId('relacao');const endAuto=byId('endAuto');const endManual=byId('endManual');const apAuto=byId('apAuto');
+    function atualizarEndereco(){{const r=relacao.value;if(r==='PROPRIETÁRIO(A)-MORADOR(A)'||r==='MORADOR(A)'){{show(endAuto,true);show(endManual,false);}}else if(r==='PROPRIETÁRIO(A)'){{show(endAuto,false);show(endManual,true);}}else{{show(endAuto,false);show(endManual,false);}}validateAll();}}
+    relacao.addEventListener('change',atualizarEndereco);
+    const motivo=byId('motivo');const blocoTexto=byId('blocoTexto');const blocoAtualizacao=byId('blocoAtualizacao');const blocoDenuncia=byId('blocoDenuncia');const blocoReforma=byId('blocoReforma');const notaAtualizacao=byId('notaAtualizacao');const notaTexto=byId('notaTexto');const notaDenuncia=byId('notaDenuncia');
+    function atualizarMotivo(){{const m=motivo.value;[blocoTexto,blocoAtualizacao,blocoDenuncia,blocoReforma,notaAtualizacao,notaTexto,notaDenuncia].forEach(el=>show(el,false));if(['ELOGIO','SUGESTÕES','DÚVIDAS'].includes(m)){{show(notaTexto,true);show(blocoTexto,true);}}if(m==='ATUALIZAÇÃO DE CADASTRO'){{show(notaAtualizacao,true);show(blocoAtualizacao,true);}}if(m==='DENÚNCIAS'){{show(notaDenuncia,true);show(blocoDenuncia,true);}}if(m==='AUTORIZAÇÃO PARA REFORMA'){{show(blocoReforma,true);}}validateAll();}}
+    motivo.addEventListener('change',atualizarMotivo);
+    const apDenWrap=byId('apDenunciadoWrap');const apDen=byId('apDenunciado');const colabWrap=byId('colabWrap');
+    document.addEventListener('change',(e)=>{{if(e.target.name==='contra'){{const v=e.target.value;const precisaAp=(v==='Morador(a)'||v==='Proprietário(a)');apDenWrap.classList.toggle('hide',!precisaAp);colabWrap.classList.toggle('show',v==='Colaborador(a)/Empresa');validateAll();}}if(e.target.id==='moraRel'){{byId('moraRelOutroWrap').classList.toggle('hide',e.target.value!=='Outros');}}if(e.target.id==='propRel'){{byId('propRelOutroWrap').classList.toggle('hide',e.target.value!=='Outros');}}}});
+    const btnEnviar=byId('btnEnviar');
+    function isEmail(v){{return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(v||'');}}function isCPFBasic(v){{return /^\\d{{3}}\\.\\d{{3}}\\.\\d{{3}}-\\d{{2}}$/.test(v||'');}}function hasDDD(v){{return /^\\d{{2}}\\s\\d{{4,5}}-\\d{{4}}$/.test(v||'');}}
+    function validarFormulario(){{let ok=true;const base=!!relacao.value&&!!byId('nome').value.trim()&&isCPFBasic(byId('cpf').value)&&validDateBR(byId('nasc').value)&&!!byId('estadoCivil').value&&isEmail(byId('email').value)&&hasDDD(byId('whats').value)&&!!motivo.value&&byId('lgpdOk').checked;ok=base;setErr('lgpdErr',!byId('lgpdOk').checked);setErr('nascErr',!validDateBR(byId('nasc').value));if(relacao.value==='PROPRIETÁRIO(A)-MORADOR(A)'||relacao.value==='MORADOR(A)'){{ok=ok&&!!apAuto.value;setErr('apAutoErr',!apAuto.value);}}if(relacao.value==='PROPRIETÁRIO(A)'){{const okEnd=['logra','num','bairro','cidade','uf','cep'].every(id=>!!byId(id).value.trim());ok=ok&&okEnd;}}if(['ELOGIO','SUGESTÕES','DÚVIDAS'].includes(motivo.value)){{const okTxt=!!byId('textoSimples').value.trim();ok=ok&&okTxt;setErr('textoSimplesErr',!okTxt);}}if(motivo.value==='DENÚNCIAS'){{const contra=(document.querySelector('input[name=\"contra\"]:checked')||{{}}).value;const okContra=!!contra;setErr('contraErr',!okContra);const okAp=((contra!=='Morador(a)'&&contra!=='Proprietário(a)')||!!apDen.value);setErr('apDenErr',!(contra!=='Morador(a)'&&contra!=='Proprietário(a)')&&!apDen.value);const okRel=!!byId('relato').value.trim();setErr('relatoErr',!okRel);const okDataOc=validDateBR(byId('dataOc').value);setErr('dataOcErr',!okDataOc);ok=ok&&okContra&&okAp&&okRel&&okDataOc;}}if(motivo.value==='AUTORIZAÇÃO PARA REFORMA'){{const okApRef=!!byId('apReforma').value;setErr('apReformaErr',!okApRef);const okDesc=!!byId('descReforma').value.trim();setErr('descReformaErr',!okDesc);const okCiencia=byId('cienciaObra').checked;setErr('cienciaErr',!okCiencia);const d1=byId('periodoIni').value;const d2=byId('periodoFim').value;const v1=!d1||validDateBR(d1);const v2=!d2||validDateBR(d2);ok=ok&&okApRef&&okDesc&&okCiencia&&v1&&v2;}}btnEnviar.disabled=!ok;return ok;}}
+    function validateAll(){{validarFormulario();}}document.addEventListener('input',validateAll,true);document.addEventListener('change',validateAll,true);
+    function headerTxt(){{return ['*Formulário de Atendimento | Condomínio Edifício Itápolis*','Síndico: Juliano Garbuggio','Regimento: AGE 23/09/2025 • Registro nº 3.814.811 (21/10/2025)','--------------------'].join('\\n');}}
+    function fmt(v){{return v||'';}}function secSolicitante(){{const r=relacao.value;let addr='';if(r==='PROPRIETÁRIO(A)-MORADOR(A)'||r==='MORADOR(A)'){{addr=`Endereço: Rua Pamplona, 1461 - Jardim Paulista | CEP: 01405-003 | São Paulo - SP\\nApartamento: ${{fmt(byId('apAuto').value)}}`;}}else if(r==='PROPRIETÁRIO(A)'){{addr=`Endereço: ${{fmt(byId('logra').value)}}, ${{fmt(byId('num').value)}} ${{fmt(byId('compl').value?'- '+byId('compl').value:'')}} - ${{fmt(byId('bairro').value)}} - ${{fmt(byId('cidade').value)}}/${{fmt(byId('uf').value)}} | CEP: ${{fmt(byId('cep').value)}}`;}}return ['[Solicitante]',`Relação: *${{fmt(r)}}*`,`Nome: ${{fmt(byId('nome').value)}}`,`CPF: ${{fmt(byId('cpf').value)}}`,`Nascimento: ${{fmt(byId('nasc').value)}}`,`Estado civil: ${{fmt(byId('estadoCivil').value)}}`,`E-mail: ${{fmt(byId('email').value)}}`,`WhatsApp: ${{fmt(byId('whats').value)}}`,addr,'--------------------'].filter(Boolean).join('\\n');}}
+    function secMotivo(){{const m=motivo.value;return ['[Motivo do contato]',`*${{m}}*`,'--------------------'].join('\\n');}}
+    function secDetalhes(){{const m=motivo.value;const linhas=['[Detalhes]'];if(['ELOGIO','SUGESTÕES','DÚVIDAS'].includes(m)){{linhas.push(byId('textoSimples').value.trim());linhas.push('Referência legal: Art. 2º, III do Regimento Interno.');}}if(m==='ATUALIZAÇÃO DE CADASTRO'){{if(byId('moraNome').value||byId('moraCPF').value||byId('moraAp').value){{const rel=byId('moraRel').value==='Outros'?`Outros (${{fmt(byId('moraRelOutro').value)}})`:fmt(byId('moraRel').value);linhas.push('[A — MORADOR(A)]',`Nome: ${{fmt(byId('moraNome').value)}}`,`CPF: ${{fmt(byId('moraCPF').value)}}`,`Relação: ${{rel||''}}`,`Estado civil: ${{fmt(byId('moraEC').value)||''}}`,`WhatsApp: ${{fmt(byId('moraWhats').value)||''}}`,`Apartamento: ${{fmt(byId('moraAp').value)||''}}`);}}if(byId('propNome').value||byId('propCPF').value||byId('propAp').value){{const relp=byId('propRel').value==='Outros'?`Outros (${{fmt(byId('propRelOutro').value)}})`:fmt(byId('propRel').value);linhas.push('[B — PROPRIETÁRIO(A)]',`Nome: ${{fmt(byId('propNome').value)}}`,`CPF: ${{fmt(byId('propCPF').value)}}`,`Relação: ${{relp||''}}`,`Estado civil: ${{fmt(byId('propEC').value)||''}}`,`E-mail: ${{fmt(byId('propEmail').value)||''}}`,`WhatsApp: ${{fmt(byId('propWhats').value)||''}}`,`Apartamento: ${{fmt(byId('propAp').value)||''}}`);}}linhas.push('Referência legal: Art. 3º, VI do Regimento Interno.');}}if(m==='DENÚNCIAS'){{const contra=(document.querySelector('input[name=\"contra\"]:checked')||{{}}).value;linhas.push(`Contra: ${{fmt(contra||'')}}`);if(contra==='Morador(a)'||contra==='Proprietário(a)')linhas.push(`Apartamento denunciado: ${{fmt(byId('apDenunciado').value||'')}}`);if(contra==='Colaborador(a)/Empresa')linhas.push(`Colaborador/Empresa: ${{fmt(byId('colabNome').value||'')}}`);linhas.push(`Data aproximada: ${{fmt(byId('dataOc').value||'')}}`);linhas.push(`Hora aproximada: ${{fmt(byId('horaOc').value||'')}}`);linhas.push('Relato:');linhas.push(byId('relato').value.trim());linhas.push('Referência legal: Art. 2º, VII do Regimento Interno.');}}if(m==='AUTORIZAÇÃO PARA REFORMA'){{linhas.push(`Apartamento: ${{fmt(byId('apReforma').value||'')}}`,`Resp. técnico: ${{fmt(byId('respTec').value||'')}}`,`Período: ${{fmt(byId('periodoIni').value||'')}} a ${{fmt(byId('periodoFim').value||'')}}`,'Descrição da reforma:',byId('descReforma').value.trim(),`Ciência: ${{byId('cienciaObra').checked?'SIM':'NÃO'}}`);linhas.push('Anexar: formulário impresso + RT + Memorial Descritivo.');}}linhas.push('--------------------');return linhas.join('\\n');}}
+    function montarMensagem(){{return [headerTxt(),secSolicitante(),secMotivo(),secDetalhes()].join('\\n');}}
+    const numeroWhats='5511956759223';btnEnviar.addEventListener('click',()=>{{if(!validarFormulario())return;const texto=montarMensagem();const wa=`https://wa.me/${{numeroWhats}}?text=${{encodeURIComponent(texto)}}`;const w=window.open(wa,'_blank');if(!w)alert('Abra o WhatsApp: pop-up pode ter sido bloqueado.');if(byId('enviarEmail').checked){{const mail='juliano@garbuggio.com.br';const assunto=encodeURIComponent('Formulário de Atendimento - Condomínio Itápolis');const corpo=encodeURIComponent(texto);const mailto=`mailto:${{mail}}?subject=${{assunto}}&body=${{corpo}}`;setTimeout(()=>{{window.location.href=mailto;}},400);}}alert('Confirmação: vamos abrir o WhatsApp Business com sua mensagem.'+(byId('enviarEmail').checked?'\\nUma cópia também será preparada para o e-mail.':''));}});
+    function limparForm(){{document.getElementById('formItapolis').reset();['endAuto','endManual','blocoTexto','blocoAtualizacao','blocoDenuncia','blocoReforma','colabWrap','notaAtualizacao','notaTexto','notaDenuncia'].forEach(id=>{{const el=byId(id);if(el){{el.classList.remove('show');el.classList.add('hide');}}}});document.querySelectorAll('.err').forEach(e=>e.classList.add('hide'));btnEnviar.disabled=true;apDenWrap?.classList.add('hide');}}window.limparForm=limparForm;(()=>{{['apAuto','moraAp','propAp','apDenunciado','apReforma'].forEach(popularApsById);atualizarEndereco();atualizarMotivo();validateAll();}})();
   </script>
 </body>
 </html>
+"""
+
+out = pathlib.Path("/mnt/data/index.html")
+out.write_text(html, encoding="utf-8")
+str(out)

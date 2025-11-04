@@ -200,6 +200,7 @@
               <div><label for="propEC">Estado civil</label><select id="propEC"><option value="">Selecione...</option><option>casado(a)</option><option>união estável</option><option>solteiro(a)</option><option>viúvo(a)</option></select></div>
               <div><label for="propEmail">E-mail</label><input type="email" id="propEmail" /></div>
               <div><label for="propWhats">WhatsApp</label><input type="text" id="propWhats" placeholder="11 90000-0000" /></div>
+              <!-- AJUSTE: igual ao Morador — select simples (sem múltipla seleção) -->
               <div><label for="propAp" class="req">Apartamento</label><select id="propAp"></select><div id="propApErr" class="err hide">Selecione o apartamento.</div></div>
             </div>
           </details>
@@ -246,8 +247,18 @@
         Seus dados serão tratados exclusivamente para fins de administração condominial, com base no <em>legítimo interesse</em> e/ou consentimento, conforme a LGPD (Lei nº 13.709/2018).
         O envio será realizado pelo próprio titular via WhatsApp Business (canal externo), isentando o condomínio de responsabilidade por eventuais indisponibilidades do serviço de terceiros.
         Não compartilhamos seus dados com terceiros além do necessário ao atendimento. Ao marcar a caixa abaixo, você declara estar ciente e concordar.</div>
-        <div class="inline" style="margin-bottom:8px"><input type="checkbox" id="lgpdOk" /><label for="lgpdOk" class="req">Li e concordo com o Aviso de Privacidade acima e autorizo o envio desta solicitação via WhatsApp Business.</label><div id="lgpdErr" class="err hide">É necessário concordar com o aviso de privacidade.</div></div>
-        <div class="inline" style="margin-bottom:8px"><input type="checkbox" id="enviarEmail" checked /><label for="enviarEmail">Clique em “Imprimir” caso queira enviar cópia por e-mail para <strong>juliano@garbuggio.com.br</strong></label></div>
+
+        <!-- AJUSTE: número clicável do WhatsApp Business -->
+        <div class="inline" style="margin-bottom:8px">
+          <input type="checkbox" id="lgpdOk" />
+          <label for="lgpdOk" class="req">
+            Li e concordo com o Aviso de Privacidade acima e autorizo o envio desta solicitação via WhatsApp Business
+            <a href="https://wa.me/5511956759223" target="_blank">(+55 11 95675-9223)</a>.
+          </label>
+          <div id="lgpdErr" class="err hide">É necessário concordar com o aviso de privacidade.</div>
+        </div>
+
+        <div class="inline" style="margin-bottom:8px"><input type="checkbox" id="enviarEmail" checked /><label for="enviarEmail">Enviar cópia também por e-mail para <strong>juliano@garbuggio.com.br</strong></label></div>
         <div class="btns"><button type="button" class="ghost" onclick="limparForm()">Limpar</button><button type="button" class="ghost" onclick="window.print()">Imprimir</button><button id="btnEnviar" type="button" class="primary" disabled>Enviar via WhatsApp Business</button></div>
         <div class="hint">O botão de envio será habilitado quando todos os campos obrigatórios estiverem preenchidos e houver concordância com o aviso de privacidade.</div>
       </section>
@@ -260,37 +271,175 @@
   </footer>
 
   <script>
-    const byId=(id)=>document.getElementById(id);const show=(el,s=true)=>{if(!el)return;el.classList.toggle('show',s);el.classList.toggle('hide',!s);};const setErr=(id,cond)=>{const el=byId(id);if(!el)return;el.classList.toggle('hide',!cond);};const APS=[11,12,13,21,22,32,41,42,43,51,52,53,61,62,63,71,72,73,81,82,83].map(String);
+    const byId=(id)=>document.getElementById(id);
+    const show=(el,s=true)=>{if(!el)return;el.classList.toggle('show',s);el.classList.toggle('hide',!s);};
+    const setErr=(id,cond)=>{const el=byId(id);if(!el)return;el.classList.toggle('hide',!cond);};
+
+    const APS=[11,12,13,21,22,32,41,42,43,51,52,53,61,62,63,71,72,73,81,82,83].map(String);
     function popularApsById(id){const el=byId(id);if(el){el.innerHTML='<option value="">Selecione...</option>'+APS.map(a=>`<option>${a}</option>`).join('');}}
     ['apAuto','moraAp','propAp','apDenunciado','apReforma'].forEach(popularApsById);
+
     function maskCPF(v){return v.replace(/\D/g,'').slice(0,11).replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2');}
     function maskCEP(v){return v.replace(/\D/g,'').slice(0,8).replace(/(\d{5})(\d)/,'$1-$2');}
     function maskWhats(v){return v.replace(/\D/g,'').slice(0,11).replace(/^(\d{2})(\d{4,5})(\d{4})$/,'$1 $2-$3');}
     function maskDate(v){v=v.replace(/\D/g,'').slice(0,8);if(v.length>=5){return v.replace(/(\d{2})(\d{2})(\d{1,4})/,'$1/$2/$3');}if(v.length>=3){return v.replace(/(\d{2})(\d{1,2})/,'$1/$2');}return v;}
     function validDateBR(v){return /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/.test(v);}
+
     ['cpf','moraCPF','propCPF'].forEach(id=>{const el=byId(id);if(el)el.addEventListener('input',e=>e.target.value=maskCPF(e.target.value));});
     ['whats','moraWhats','propWhats'].forEach(id=>{const el=byId(id);if(el)el.addEventListener('input',e=>e.target.value=maskWhats(e.target.value));});
     const cepEl=byId('cep');if(cepEl)cepEl.addEventListener('input',e=>e.target.value=maskCEP(e.target.value));
     ['nasc','dataOc','periodoIni','periodoFim'].forEach(id=>{const el=byId(id);if(el)el.addEventListener('input',e=>e.target.value=maskDate(e.target.value));});
+
     const relacao=byId('relacao');const endAuto=byId('endAuto');const endManual=byId('endManual');const apAuto=byId('apAuto');
-    function atualizarEndereco(){const r=relacao.value;if(r==='PROPRIETÁRIO(A)-MORADOR(A)'||r==='MORADOR(A)'){show(endAuto,true);show(endManual,false);}else if(r==='PROPRIETÁRIO(A)'){show(endAuto,false);show(endManual,true);}else{show(endAuto,false);show(endManual,false);}validateAll();}
+    function atualizarEndereco(){
+      const r=relacao.value;
+      if(r==='PROPRIETÁRIO(A)-MORADOR(A)'||r==='MORADOR(A)'){show(endAuto,true);show(endManual,false);}
+      else if(r==='PROPRIETÁRIO(A)'){show(endAuto,false);show(endManual,true);}
+      else{show(endAuto,false);show(endManual,false);}
+      validateAll();
+    }
     relacao.addEventListener('change',atualizarEndereco);
+
     const motivo=byId('motivo');const blocoTexto=byId('blocoTexto');const blocoAtualizacao=byId('blocoAtualizacao');const blocoDenuncia=byId('blocoDenuncia');const blocoReforma=byId('blocoReforma');const notaAtualizacao=byId('notaAtualizacao');const notaTexto=byId('notaTexto');const notaDenuncia=byId('notaDenuncia');
-    function atualizarMotivo(){const m=motivo.value;[blocoTexto,blocoAtualizacao,blocoDenuncia,blocoReforma,notaAtualizacao,notaTexto,notaDenuncia].forEach(el=>show(el,false));if(['ELOGIO','SUGESTÕES','DÚVIDAS'].includes(m)){show(notaTexto,true);show(blocoTexto,true);}if(m==='ATUALIZAÇÃO DE CADASTRO'){show(notaAtualizacao,true);show(blocoAtualizacao,true);}if(m==='DENÚNCIAS'){show(notaDenuncia,true);show(blocoDenuncia,true);}if(m==='AUTORIZAÇÃO PARA REFORMA'){show(blocoReforma,true);}validateAll();}
+    function atualizarMotivo(){
+      const m=motivo.value;
+      [blocoTexto,blocoAtualizacao,blocoDenuncia,blocoReforma,notaAtualizacao,notaTexto,notaDenuncia].forEach(el=>show(el,false));
+      if(['ELOGIO','SUGESTÕES','DÚVIDAS'].includes(m)){show(notaTexto,true);show(blocoTexto,true);}
+      if(m==='ATUALIZAÇÃO DE CADASTRO'){show(notaAtualizacao,true);show(blocoAtualizacao,true);}
+      if(m==='DENÚNCIAS'){show(notaDenuncia,true);show(blocoDenuncia,true);}
+      if(m==='AUTORIZAÇÃO PARA REFORMA'){show(blocoReforma,true);}
+      validateAll();
+    }
     motivo.addEventListener('change',atualizarMotivo);
+
     const apDenWrap=byId('apDenunciadoWrap');const apDen=byId('apDenunciado');const colabWrap=byId('colabWrap');
-    document.addEventListener('change',(e)=>{if(e.target.name==='contra'){const v=e.target.value;const precisaAp=(v==='Morador(a)'||v==='Proprietário(a)');apDenWrap.classList.toggle('hide',!precisaAp);colabWrap.classList.toggle('show',v==='Colaborador(a)/Empresa');validateAll();}if(e.target.id==='moraRel'){byId('moraRelOutroWrap').classList.toggle('hide',e.target.value!=='Outros');}if(e.target.id==='propRel'){byId('propRelOutroWrap').classList.toggle('hide',e.target.value!=='Outros');}});
+    document.addEventListener('change',(e)=>{
+      if(e.target.name==='contra'){
+        const v=e.target.value;const precisaAp=(v==='Morador(a)'||v==='Proprietário(a)');
+        apDenWrap.classList.toggle('hide',!precisaAp);
+        colabWrap.classList.toggle('show',v==='Colaborador(a)/Empresa');
+        validateAll();
+      }
+      if(e.target.id==='moraRel'){byId('moraRelOutroWrap').classList.toggle('hide',e.target.value!=='Outros');}
+      if(e.target.id==='propRel'){byId('propRelOutroWrap').classList.toggle('hide',e.target.value!=='Outros');}
+    });
+
     const btnEnviar=byId('btnEnviar');
-    function isEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v||'');}function isCPFBasic(v){return /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(v||'');}function hasDDD(v){return /^\d{2}\s\d{4,5}-\d{4}$/.test(v||'');}
-    function validarFormulario(){let ok=true;const base=!!relacao.value&&!!byId('nome').value.trim()&&isCPFBasic(byId('cpf').value)&&validDateBR(byId('nasc').value)&&!!byId('estadoCivil').value&&isEmail(byId('email').value)&&hasDDD(byId('whats').value)&&!!motivo.value&&byId('lgpdOk').checked;ok=base;setErr('lgpdErr',!byId('lgpdOk').checked);setErr('nascErr',!validDateBR(byId('nasc').value));if(relacao.value==='PROPRIETÁRIO(A)-MORADOR(A)'||relacao.value==='MORADOR(A)'){ok=ok&&!!apAuto.value;setErr('apAutoErr',!apAuto.value);}if(relacao.value==='PROPRIETÁRIO(A)'){const okEnd=['logra','num','bairro','cidade','uf','cep'].every(id=>!!byId(id).value.trim());ok=ok&&okEnd;}if(['ELOGIO','SUGESTÕES','DÚVIDAS'].includes(motivo.value)){const okTxt=!!byId('textoSimples').value.trim();ok=ok&&okTxt;setErr('textoSimplesErr',!okTxt);}if(motivo.value==='DENÚNCIAS'){const contra=(document.querySelector('input[name="contra"]:checked')||{}).value;const okContra=!!contra;setErr('contraErr',!okContra);const okAp=((contra!=='Morador(a)'&&contra!=='Proprietário(a)')||!!apDen.value);setErr('apDenErr',!(contra!=='Morador(a)'&&contra!=='Proprietário(a)')&&!apDen.value);const okRel=!!byId('relato').value.trim();setErr('relatoErr',!okRel);const okDataOc=validDateBR(byId('dataOc').value);setErr('dataOcErr',!okDataOc);ok=ok&&okContra&&okAp&&okRel&&okDataOc;}if(motivo.value==='AUTORIZAÇÃO PARA REFORMA'){const okApRef=!!byId('apReforma').value;setErr('apReformaErr',!okApRef);const okDesc=!!byId('descReforma').value.trim();setErr('descReformaErr',!okDesc);const okCiencia=byId('cienciaObra').checked;setErr('cienciaErr',!okCiencia);const d1=byId('periodoIni').value;const d2=byId('periodoFim').value;const v1=!d1||validDateBR(d1);const v2=!d2||validDateBR(d2);ok=ok&&okApRef&&okDesc&&okCiencia&&v1&&v2;}btnEnviar.disabled=!ok;return ok;}
-    function validateAll(){validarFormulario();}document.addEventListener('input',validateAll,true);document.addEventListener('change',validateAll,true);
+    function isEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v||'');}
+    function isCPFBasic(v){return /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(v||'');}
+    function hasDDD(v){return /^\d{2}\s\d{4,5}-\d{4}$/.test(v||'');}
+
+    function validarFormulario(){
+      let ok=true;
+      const base=!!relacao.value&&!!byId('nome').value.trim()&&isCPFBasic(byId('cpf').value)&&validDateBR(byId('nasc').value)&&!!byId('estadoCivil').value&&isEmail(byId('email').value)&&hasDDD(byId('whats').value)&&!!motivo.value&&byId('lgpdOk').checked;
+      ok=base;
+      setErr('lgpdErr',!byId('lgpdOk').checked);
+      setErr('nascErr',!validDateBR(byId('nasc').value));
+      if(relacao.value==='PROPRIETÁRIO(A)-MORADOR(A)'||relacao.value==='MORADOR(A)'){ok=ok&&!!apAuto.value;setErr('apAutoErr',!apAuto.value);}
+      if(relacao.value==='PROPRIETÁRIO(A)'){
+        const okEnd=['logra','num','bairro','cidade','uf','cep'].every(id=>!!byId(id).value.trim());
+        ok=ok&&okEnd;
+      }
+      if(['ELOGIO','SUGESTÕES','DÚVIDAS'].includes(motivo.value)){
+        const okTxt=!!byId('textoSimples').value.trim();ok=ok&&okTxt;setErr('textoSimplesErr',!okTxt);
+      }
+      if(motivo.value==='DENÚNCIAS'){
+        const contra=(document.querySelector('input[name="contra"]:checked')||{}).value;
+        const okContra=!!contra;setErr('contraErr',!okContra);
+        const okAp=((contra!=='Morador(a)'&&contra!=='Proprietário(a)')||!!apDen.value);setErr('apDenErr',!(contra!=='Morador(a)'&&contra!=='Proprietário(a)')&&!apDen.value);
+        const okRel=!!byId('relato').value.trim();setErr('relatoErr',!okRel);
+        const okDataOc=validDateBR(byId('dataOc').value);setErr('dataOcErr',!okDataOc);
+        ok=ok&&okContra&&okAp&&okRel&&okDataOc;
+      }
+      if(motivo.value==='AUTORIZAÇÃO PARA REFORMA'){
+        const okApRef=!!byId('apReforma').value;setErr('apReformaErr',!okApRef);
+        const okDesc=!!byId('descReforma').value.trim();setErr('descReformaErr',!okDesc);
+        const okCiencia=byId('cienciaObra').checked;setErr('cienciaErr',!okCiencia);
+        const d1=byId('periodoIni').value;const d2=byId('periodoFim').value;
+        const v1=!d1||validDateBR(d1);const v2=!d2||validDateBR(d2);
+        ok=ok&&okApRef&&okDesc&&okCiencia&&v1&&v2;
+      }
+      btnEnviar.disabled=!ok;return ok;
+    }
+    function validateAll(){validarFormulario();}
+    document.addEventListener('input',validateAll,true);
+    document.addEventListener('change',validateAll,true);
+
     function headerTxt(){return ['*Formulário de Atendimento | Condomínio Edifício Itápolis*','Síndico: Juliano Garbuggio','Regimento: AGE 23/09/2025 • Registro nº 3.814.811 (21/10/2025)','--------------------'].join('\n');}
-    function fmt(v){return v||'';}function secSolicitante(){const r=relacao.value;let addr='';if(r==='PROPRIETÁRIO(A)-MORADOR(A)'||r==='MORADOR(A)'){addr=`Endereço: Rua Pamplona, 1461 - Jardim Paulista | CEP: 01405-003 | São Paulo - SP\nApartamento: ${fmt(byId('apAuto').value)}`;}else if(r==='PROPRIETÁRIO(A)'){addr=`Endereço: ${fmt(byId('logra').value)}, ${fmt(byId('num').value)} ${fmt(byId('compl').value?'- '+byId('compl').value:'')} - ${fmt(byId('bairro').value)} - ${fmt(byId('cidade').value)}/${fmt(byId('uf').value)} | CEP: ${fmt(byId('cep').value)}`;}return ['[Solicitante]',`Relação: *${fmt(r)}*`,`Nome: ${fmt(byId('nome').value)}`,`CPF: ${fmt(byId('cpf').value)}`,`Nascimento: ${fmt(byId('nasc').value)}`,`Estado civil: ${fmt(byId('estadoCivil').value)}`,`E-mail: ${fmt(byId('email').value)}`,`WhatsApp: ${fmt(byId('whats').value)}`,addr,'--------------------'].filter(Boolean).join('\n');}
+    function fmt(v){return v||'';}
+    function secSolicitante(){
+      const r=relacao.value;let addr='';
+      if(r==='PROPRIETÁRIO(A)-MORADOR(A)'||r==='MORADOR(A)'){
+        addr=`Endereço: Rua Pamplona, 1461 - Jardim Paulista | CEP: 01405-003 | São Paulo - SP\nApartamento: ${fmt(byId('apAuto').value)}`;
+      }else if(r==='PROPRIETÁRIO(A)'){
+        addr=`Endereço: ${fmt(byId('logra').value)}, ${fmt(byId('num').value)} ${fmt(byId('compl').value?'- '+byId('compl').value:'')} - ${fmt(byId('bairro').value)} - ${fmt(byId('cidade').value)}/${fmt(byId('uf').value)} | CEP: ${fmt(byId('cep').value)}`;
+      }
+      return ['[Solicitante]',`Relação: *${fmt(r)}*`,`Nome: ${fmt(byId('nome').value)}`,`CPF: ${fmt(byId('cpf').value)}`,`Nascimento: ${fmt(byId('nasc').value)}`,`Estado civil: ${fmt(byId('estadoCivil').value)}`,`E-mail: ${fmt(byId('email').value)}`,`WhatsApp: ${fmt(byId('whats').value)}`,addr,'--------------------'].filter(Boolean).join('\n');
+    }
     function secMotivo(){const m=motivo.value;return ['[Motivo do contato]',`*${m}*`,'--------------------'].join('\n');}
-    function secDetalhes(){const m=motivo.value;const linhas=['[Detalhes]'];if(['ELOGIO','SUGESTÕES','DÚVIDAS'].includes(m)){linhas.push(byId('textoSimples').value.trim());linhas.push('Referência legal: Art. 2º, III do Regimento Interno.');}if(m==='ATUALIZAÇÃO DE CADASTRO'){if(byId('moraNome').value||byId('moraCPF').value||byId('moraAp').value){const rel=byId('moraRel').value==='Outros'?`Outros (${fmt(byId('moraRelOutro').value)})`:fmt(byId('moraRel').value);linhas.push('[A — MORADOR(A)]',`Nome: ${fmt(byId('moraNome').value)}`,`CPF: ${fmt(byId('moraCPF').value)}`,`Relação: ${rel||''}`,`Estado civil: ${fmt(byId('moraEC').value)||''}`,`WhatsApp: ${fmt(byId('moraWhats').value)||''}`,`Apartamento: ${fmt(byId('moraAp').value)||''}`);}if(byId('propNome').value||byId('propCPF').value||byId('propAp').value){const relp=byId('propRel').value==='Outros'?`Outros (${fmt(byId('propRelOutro').value)})`:fmt(byId('propRel').value);linhas.push('[B — PROPRIETÁRIO(A)]',`Nome: ${fmt(byId('propNome').value)}`,`CPF: ${fmt(byId('propCPF').value)}`,`Relação: ${relp||''}`,`Estado civil: ${fmt(byId('propEC').value)||''}`,`E-mail: ${fmt(byId('propEmail').value)||''}`,`WhatsApp: ${fmt(byId('propWhats').value)||''}`,`Apartamento: ${fmt(byId('propAp').value)||''}`);}linhas.push('Referência legal: Art. 3º, VI do Regimento Interno.');}if(m==='DENÚNCIAS'){const contra=(document.querySelector('input[name="contra"]:checked')||{}).value;linhas.push(`Contra: ${fmt(contra||'')}`);if(contra==='Morador(a)'||contra==='Proprietário(a)')linhas.push(`Apartamento denunciado: ${fmt(byId('apDenunciado').value||'')}`);if(contra==='Colaborador(a)/Empresa')linhas.push(`Colaborador/Empresa: ${fmt(byId('colabNome').value||'')}`);linhas.push(`Data aproximada: ${fmt(byId('dataOc').value||'')}`);linhas.push(`Hora aproximada: ${fmt(byId('horaOc').value||'')}`);linhas.push('Relato:');linhas.push(byId('relato').value.trim());linhas.push('Referência legal: Art. 2º, VII do Regimento Interno.');}if(m==='AUTORIZAÇÃO PARA REFORMA'){linhas.push(`Apartamento: ${fmt(byId('apReforma').value||'')}`,`Resp. técnico: ${fmt(byId('respTec').value||'')}`,`Período: ${fmt(byId('periodoIni').value||'')} a ${fmt(byId('periodoFim').value||'')}`,'Descrição da reforma:',byId('descReforma').value.trim(),`Ciência: ${byId('cienciaObra').checked?'SIM':'NÃO'}`);linhas.push('Anexar: formulário impresso + RT + Memorial Descritivo.');}linhas.push('--------------------');return linhas.join('\n');}
+    function secDetalhes(){
+      const m=motivo.value;const linhas=['[Detalhes]'];
+      if(['ELOGIO','SUGESTÕES','DÚVIDAS'].includes(m)){
+        linhas.push(byId('textoSimples').value.trim());linhas.push('Referência legal: Art. 2º, III do Regimento Interno.');
+      }
+      if(m==='ATUALIZAÇÃO DE CADASTRO'){
+        if(byId('moraNome').value||byId('moraCPF').value||byId('moraAp').value){
+          const rel=byId('moraRel').value==='Outros'?`Outros (${fmt(byId('moraRelOutro').value)})`:fmt(byId('moraRel').value);
+          linhas.push('[A — MORADOR(A)]',`Nome: ${fmt(byId('moraNome').value)}`,`CPF: ${fmt(byId('moraCPF').value)}`,`Relação: ${rel||''}`,`Estado civil: ${fmt(byId('moraEC').value)||''}`,`WhatsApp: ${fmt(byId('moraWhats').value)||''}`,`Apartamento: ${fmt(byId('moraAp').value)||''}`);
+        }
+        if(byId('propNome').value||byId('propCPF').value||byId('propAp').value){
+          const relp=byId('propRel').value==='Outros'?`Outros (${fmt(byId('propRelOutro').value)})`:fmt(byId('propRel').value);
+          linhas.push('[B — PROPRIETÁRIO(A)]',`Nome: ${fmt(byId('propNome').value)}`,`CPF: ${fmt(byId('propCPF').value)}`,`Relação: ${relp||''}`,`Estado civil: ${fmt(byId('propEC').value)||''}`,`E-mail: ${fmt(byId('propEmail').value)||''}`,`WhatsApp: ${fmt(byId('propWhats').value)||''}`,`Apartamento: ${fmt(byId('propAp').value)||''}`);
+        }
+        linhas.push('Referência legal: Art. 3º, VI do Regimento Interno.');
+      }
+      if(m==='DENÚNCIAS'){
+        const contra=(document.querySelector('input[name="contra"]:checked')||{}).value;
+        linhas.push(`Contra: ${fmt(contra||'')}`);
+        if(contra==='Morador(a)'||contra==='Proprietário(a)')linhas.push(`Apartamento denunciado: ${fmt(byId('apDenunciado').value||'')}`);
+        if(contra==='Colaborador(a)/Empresa')linhas.push(`Colaborador/Empresa: ${fmt(byId('colabNome').value||'')}`);
+        linhas.push(`Data aproximada: ${fmt(byId('dataOc').value||'')}`);
+        linhas.push(`Hora aproximada: ${fmt(byId('horaOc').value||'')}`);
+        linhas.push('Relato:');linhas.push(byId('relato').value.trim());
+        linhas.push('Referência legal: Art. 2º, VII do Regimento Interno.');
+      }
+      if(m==='AUTORIZAÇÃO PARA REFORMA'){
+        linhas.push(`Apartamento: ${fmt(byId('apReforma').value||'')}`,`Resp. técnico: ${fmt(byId('respTec').value||'')}`,`Período: ${fmt(byId('periodoIni').value||'')} a ${fmt(byId('periodoFim').value||'')}`,'Descrição da reforma:',byId('descReforma').value.trim(),`Ciência: ${byId('cienciaObra').checked?'SIM':'NÃO'}`);
+        linhas.push('Anexar: formulário impresso + RT + Memorial Descritivo.');
+      }
+      linhas.push('--------------------');return linhas.join('\n');
+    }
     function montarMensagem(){return [headerTxt(),secSolicitante(),secMotivo(),secDetalhes()].join('\n');}
-    const numeroWhats='5511956759223';btnEnviar.addEventListener('click',()=>{if(!validarFormulario())return;const texto=montarMensagem();const wa=`https://wa.me/${numeroWhats}?text=${encodeURIComponent(texto)}`;const w=window.open(wa,'_blank');if(!w)alert('Abra o WhatsApp: pop-up pode ter sido bloqueado.');if(byId('enviarEmail').checked){const mail='juliano@garbuggio.com.br';const assunto=encodeURIComponent('Formulário de Atendimento - Condomínio Itápolis');const corpo=encodeURIComponent(texto);const mailto=`mailto:${mail}?subject=${assunto}&body=${corpo}`;setTimeout(()=>{window.location.href=mailto;},400);}alert('Confirmação: vamos abrir o WhatsApp Business com sua mensagem.'+(byId('enviarEmail').checked?'\nUma cópia também será preparada para o e-mail.':''));});
-    function limparForm(){document.getElementById('formItapolis').reset();['endAuto','endManual','blocoTexto','blocoAtualizacao','blocoDenuncia','blocoReforma','colabWrap','notaAtualizacao','notaTexto','notaDenuncia'].forEach(id=>{const el=byId(id);if(el){el.classList.remove('show');el.classList.add('hide');}});document.querySelectorAll('.err').forEach(e=>e.classList.add('hide'));btnEnviar.disabled=true;apDenWrap?.classList.add('hide');}window.limparForm=limparForm;(()=>{['apAuto','moraAp','propAp','apDenunciado','apReforma'].forEach(popularApsById);atualizarEndereco();atualizarMotivo();validateAll();})();
+
+    const numeroWhats='5511956759223';
+    btnEnviar.addEventListener('click',()=>{
+      if(!validarFormulario())return;
+      const texto=montarMensagem();
+      const wa=`https://wa.me/${numeroWhats}?text=${encodeURIComponent(texto)}`;
+      const w=window.open(wa,'_blank');if(!w)alert('Abra o WhatsApp: pop-up pode ter sido bloqueado.');
+      if(byId('enviarEmail').checked){
+        const mail='juliano@garbuggio.com.br';
+        const assunto=encodeURIComponent('Formulário de Atendimento - Condomínio Itápolis');
+        const corpo=encodeURIComponent(texto);
+        const mailto=`mailto:${mail}?subject=${assunto}&body=${corpo}`;
+        setTimeout(()=>{window.location.href=mailto;},400);
+      }
+      alert('Confirmação: vamos abrir o WhatsApp Business com sua mensagem.'+(byId('enviarEmail').checked?'\nUma cópia também será preparada para o e-mail.':''));
+    });
+
+    function limparForm(){
+      document.getElementById('formItapolis').reset();
+      ['endAuto','endManual','blocoTexto','blocoAtualizacao','blocoDenuncia','blocoReforma','colabWrap','notaAtualizacao','notaTexto','notaDenuncia'].forEach(id=>{const el=byId(id);if(el){el.classList.remove('show');el.classList.add('hide');}});
+      document.querySelectorAll('.err').forEach(e=>e.classList.add('hide'));
+      btnEnviar.disabled=true;apDenWrap?.classList.add('hide');
+    }
+    window.limparForm=limparForm;
+
+    (()=>{
+      ['apAuto','moraAp','propAp','apDenunciado','apReforma'].forEach(popularApsById);
+      atualizarEndereco();atualizarMotivo();validateAll();
+    })();
   </script>
 </body>
 </html>
+

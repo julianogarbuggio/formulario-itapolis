@@ -177,7 +177,7 @@
           <div class="inline" style="margin-bottom:8px">
             <button type="button" class="ghost" id="copiarSolicitante">Copiar dados do Solicitante</button><span class="muted">(opcional)</span>
           </div>
-          <details class="card"><summary><strong>A — MORADOR(A)</strong></summary>
+          <details class="card" id="detMorador"><summary><strong>A — MORADOR(A)</strong></summary>
             <div class="row row-2" style="margin-top:10px">
               <div><label for="moraNome">Nome completo</label><input type="text" id="moraNome" /></div>
               <div><label for="moraCPF">CPF</label><input type="text" id="moraCPF" placeholder="000.000.000-00" /></div>
@@ -190,7 +190,7 @@
             </div>
           </details>
 
-          <details class="card"><summary><strong>B — PROPRIETÁRIO(A)</strong></summary>
+          <details class="card" id="detProprietario"><summary><strong>B — PROPRIETÁRIO(A)</strong></summary>
             <div class="row row-2" style="margin-top:10px">
               <div><label for="propNome">Nome completo</label><input type="text" id="propNome" /></div>
               <div><label for="propCPF">CPF</label><input type="text" id="propCPF" placeholder="000.000.000-00" /></div>
@@ -200,7 +200,6 @@
               <div><label for="propEC">Estado civil</label><select id="propEC"><option value="">Selecione...</option><option>casado(a)</option><option>união estável</option><option>solteiro(a)</option><option>viúvo(a)</option></select></div>
               <div><label for="propEmail">E-mail</label><input type="email" id="propEmail" /></div>
               <div><label for="propWhats">WhatsApp</label><input type="text" id="propWhats" placeholder="11 90000-0000" /></div>
-              <!-- AJUSTE: igual ao Morador — select simples (sem múltipla seleção) -->
               <div><label for="propAp" class="req">Apartamento</label><select id="propAp"></select><div id="propApErr" class="err hide">Selecione o apartamento.</div></div>
             </div>
           </details>
@@ -247,8 +246,6 @@
         Seus dados serão tratados exclusivamente para fins de administração condominial, com base no <em>legítimo interesse</em> e/ou consentimento, conforme a LGPD (Lei nº 13.709/2018).
         O envio será realizado pelo próprio titular via WhatsApp Business (canal externo), isentando o condomínio de responsabilidade por eventuais indisponibilidades do serviço de terceiros.
         Não compartilhamos seus dados com terceiros além do necessário ao atendimento. Ao marcar a caixa abaixo, você declara estar ciente e concordar.</div>
-
-        <!-- AJUSTE: número clicável do WhatsApp Business -->
         <div class="inline" style="margin-bottom:8px">
           <input type="checkbox" id="lgpdOk" />
           <label for="lgpdOk" class="req">
@@ -411,6 +408,47 @@
     }
     function montarMensagem(){return [headerTxt(),secSolicitante(),secMotivo(),secDetalhes()].join('\n');}
 
+    // NOVO: copiar dados do Solicitante para A (Morador) e B (Proprietário)
+    const copiarBtn = byId('copiarSolicitante');
+    if (copiarBtn){
+      copiarBtn.addEventListener('click', ()=>{
+        // Campos de origem (Solicitante)
+        const nome = byId('nome').value.trim();
+        const cpf = byId('cpf').value.trim();
+        const ec  = byId('estadoCivil').value;
+        const email = byId('email').value.trim();
+        const whats = byId('whats').value.trim();
+        const apSel = byId('apAuto').value;
+
+        // Destino: MORADOR
+        byId('moraNome').value = nome;
+        byId('moraCPF').value = cpf;
+        byId('moraEC').value = ec || '';
+        byId('moraWhats').value = whats;
+        if (apSel) byId('moraAp').value = apSel;
+
+        // Destino: PROPRIETÁRIO
+        byId('propNome').value = nome;
+        byId('propCPF').value = cpf;
+        byId('propEC').value = ec || '';
+        byId('propEmail').value = email;
+        byId('propWhats').value = whats;
+
+        // Se a relação for PROPRIETÁRIO(A)-MORADOR(A), aplico o mesmo ap;
+        // se for apenas PROPRIETÁRIO(A), deixo para você escolher.
+        const r = byId('relacao').value;
+        if (r === 'PROPRIETÁRIO(A)-MORADOR(A)' && apSel){
+          byId('propAp').value = apSel;
+        }
+
+        // Abre os dois blocos para revisão
+        byId('detMorador').open = true;
+        byId('detProprietario').open = true;
+
+        validateAll();
+      });
+    }
+
     const numeroWhats='5511956759223';
     btnEnviar.addEventListener('click',()=>{
       if(!validarFormulario())return;
@@ -442,4 +480,3 @@
   </script>
 </body>
 </html>
-
